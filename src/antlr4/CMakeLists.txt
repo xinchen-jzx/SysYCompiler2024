@@ -1,7 +1,9 @@
 # Generate lexer and parser with ANTLR
-list(APPEND CMAKE_MODULE_PATH "${ANTLR_RUNTIME}/cmake")
+list(APPEND CMAKE_MODULE_PATH ${ANTLR_CPP_RUNTIME_SOURCE_DIR}/cmake)
 
-include(FindANTLR)
+message(STATUS "CMake module path for ANTLR runtime found in ${CMAKE_MODULE_PATH}")
+
+find_package(ANTLR REQUIRED)
 
 antlr_target(SysYGen SysY.g4
   LEXER PARSER
@@ -10,6 +12,5 @@ antlr_target(SysYGen SysY.g4
 )
 
 add_library(SysYParser SHARED ${ANTLR_SysYGen_CXX_OUTPUTS})
-target_include_directories(SysYParser PUBLIC ${ANTLR_RUNTIME}/runtime/src)
-target_link_libraries(SysYParser PUBLIC antlr4_shared)
+target_link_libraries(SysYParser PUBLIC antlr4-runtime)
 

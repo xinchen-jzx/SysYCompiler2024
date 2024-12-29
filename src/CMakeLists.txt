@@ -11,7 +11,6 @@ add_subdirectory(pass)
 add_subdirectory(mir)
 add_subdirectory(support)
 add_subdirectory(target)
-# add_subdirectory(driver)
 
 add_executable(compiler
     ${SRC_FILES}
@@ -24,5 +23,6 @@ target_link_libraries(compiler PUBLIC
     mir
     support
     target
-    # driver
+    m
+    antlr4-runtime
 )

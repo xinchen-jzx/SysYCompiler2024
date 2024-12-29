@@ -34,19 +34,20 @@ if(NOT CMAKE_BUILD_TYPE)
 endif(NOT CMAKE_BUILD_TYPE)
 
 # Set output directories
-
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 
+set(THIRD_PARTY_DIR ${PROJECT_SOURCE_DIR}/third_party)
 
 # ANTLR
-set(ANTLR_EXECUTABLE "${PROJECT_SOURCE_DIR}/antlr/antlr-4.12.0-complete.jar")
-set(ANTLR_RUNTIME "${PROJECT_SOURCE_DIR}/antlr/antlr4-runtime")
+set(ANTLR_DIR ${THIRD_PARTY_DIR}/antlr4)
+set(ANTLR_CPP_RUNTIME_SOURCE_DIR ${ANTLR_DIR}/antlr4-cpp-runtime-4.12.0-source)
+set(ANTLR_EXECUTABLE ${ANTLR_DIR}/antlr-4.12.0-complete.jar)
 
-set(ANTLR4_INSTALL ON)
-set(ANTLR_BUILD_CPP_TESTS OFF) # Only for ANTLR 4.10.0 and later versions
-add_subdirectory(${ANTLR_RUNTIME})
+# local install of ANTLR4 runtime
+include_directories(/usr/local/include/antlr4-runtime/)
+link_directories(/usr/local/lib/)
 
 # Add All Includes
 include_directories(
@@ -63,13 +64,6 @@ file(GLOB_RECURSE ALL_SRC_FILES
   "${CMAKE_SOURCE_DIR}/src/*.[ch]pp"
   "${CMAKE_SOURCE_DIR}/include/*.[ch]"
   "${CMAKE_SOURCE_DIR}/include/*.[ch]pp")
-
-# Format Check
-project(formatting)
-include(formatting.cmake)
-
-clang_format(format ${ALL_SRC_FILES})
-clang_format_check(format_check ${ALL_SRC_FILES})
 
 find_package(Python3 REQUIRED)
 
